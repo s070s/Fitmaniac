@@ -1,0 +1,46 @@
+@page "/goals"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IGoalConsumer GoalConsumer
+
+<PageTitle>Goals — Fitmaniac</PageTitle>
+<h1>My Goals</h1>
+
+@if (_goals is null)
+{
+    <p>Loading...</p>
+}
+else if (_goals.Count == 0)
+{
+    <p class="text-muted">No goals yet. Add one to track your progress!</p>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var g in _goals)
+        {
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@g.GoalType</h5>
+                        <p class="text-muted">@g.Description</p>
+                        <small>Target: @g.TargetDate.ToString("dd MMM yyyy")</small><br/>
+                        <small>Quantity: @g.GoalQuantity @g.GoalUnit</small>
+                        @if (g.Status == Fitmaniac.Domain.Enums.GoalStatus.Completed)
+                        {
+                            <span class="badge bg-success ms-2">Completed</span>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private IReadOnlyList<GoalDto>? _goals;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _goals = await GoalConsumer.GetMyGoalsAsync();
+    }
+}

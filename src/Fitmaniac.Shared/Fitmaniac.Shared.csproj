@@ -1,0 +1,45 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="JSON\**\*.json" />
+    <EmbeddedResource Update="Resources\GlobalRes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>GlobalRes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\GlobalRes.el.resx">
+      <DependentUpon>GlobalRes.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\AuthRes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>AuthRes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\AuthRes.el.resx">
+      <DependentUpon>AuthRes.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Messages\ErrorMessagesRes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>ErrorMessagesRes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Messages\ErrorMessagesRes.el.resx">
+      <DependentUpon>ErrorMessagesRes.resx</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Messages\SuccessMessagesRes.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>SuccessMessagesRes.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Resources\Messages\SuccessMessagesRes.el.resx">
+      <DependentUpon>SuccessMessagesRes.resx</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Fitmaniac.Domain\Fitmaniac.Domain.csproj" />
+  </ItemGroup>
+
+</Project>

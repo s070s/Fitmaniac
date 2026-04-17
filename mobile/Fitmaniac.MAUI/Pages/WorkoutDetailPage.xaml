@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Fitmaniac.MAUI.Pages.WorkoutDetailPage"
+             Title="Workout Detail">
+
+    <ScrollView Padding="16">
+        <VerticalStackLayout Spacing="12">
+            <ActivityIndicator IsRunning="{Binding IsBusy}" IsVisible="{Binding IsBusy}" />
+
+            <StackLayout IsVisible="{Binding Workout, Converter={StaticResource NullToBool}}">
+                <Label Text="{Binding Workout.Type}" FontSize="24" FontAttributes="Bold" />
+                <Label Text="{Binding Workout.ScheduledDateTime, StringFormat='{0:dd MMM yyyy}'}" TextColor="Gray" />
+                <Label Text="{Binding Workout.Notes}" />
+
+                <Label Text="Exercises" FontSize="18" FontAttributes="Bold" Margin="0,12,0,0" />
+                <CollectionView ItemsSource="{Binding Workout.Exercises}">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="10" Margin="0,4" Style="{StaticResource CardBorder}">
+                                <Label Text="{Binding ExerciseName}" FontAttributes="Bold" />
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
+                <Stepper Minimum="1" Maximum="10" Value="{Binding PerceivedIntensity}" Margin="0,12,0,0" />
+                <Label Text="{Binding PerceivedIntensity, StringFormat='Intensity: {0}'}" />
+
+                <Button Text="Mark Complete" Command="{Binding CompleteCommand}" Margin="0,12,0,0" />
+            </StackLayout>
+        </VerticalStackLayout>
+    </ScrollView>
+</ContentPage>

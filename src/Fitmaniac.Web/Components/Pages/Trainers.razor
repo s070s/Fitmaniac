@@ -1,0 +1,43 @@
+@page "/trainers"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject ITrainerConsumer TrainerConsumer
+@inject IClientConsumer ClientConsumer
+
+<PageTitle>Trainers — Fitmaniac</PageTitle>
+<h1>Find a Trainer</h1>
+
+@if (_trainers is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var t in _trainers.Items)
+        {
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">@t.FirstName @t.LastName</h5>
+                        <p class="card-text text-muted">@t.City</p>
+                        <button class="btn btn-sm btn-outline-primary" @onclick="() => Subscribe(t.Id)">Subscribe</button>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private Fitmaniac.Application.Common.PagedResult<TrainerListItemDto>? _trainers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _trainers = await TrainerConsumer.GetTrainersAsync();
+    }
+
+    private async Task Subscribe(int trainerId)
+    {
+        await ClientConsumer.SubscribeAsync(trainerId);
+    }
+}

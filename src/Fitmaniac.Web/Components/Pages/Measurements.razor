@@ -1,0 +1,88 @@
+@page "/measurements"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IMeasurementConsumer MeasurementConsumer
+
+<PageTitle>Measurements — Fitmaniac</PageTitle>
+<h1>Body Measurements</h1>
+
+<div class="card mb-4">
+    <div class="card-header">Add Measurement</div>
+    <div class="card-body">
+        <EditForm Model="_form" OnValidSubmit="AddMeasurement">
+            <DataAnnotationsValidator />
+            <div class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Unit</label>
+                    <InputSelect @bind-Value="_form.Unit" class="form-select">
+                        @foreach (var u in Enum.GetValues<Fitmaniac.Domain.Enums.GoalUnit>())
+                        {
+                            <option value="@u">@u</option>
+                        }
+                    </InputSelect>
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Value</label>
+                    <InputNumber @bind-Value="_form.Value" class="form-control" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Date</label>
+                    <InputDate @bind-Value="_form.Date" class="form-control" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary w-100">Add</button>
+                </div>
+            </div>
+        </EditForm>
+    </div>
+</div>
+
+@if (_measurements is not null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Date</th><th>Unit</th><th>Value</th><th>PB</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var m in _measurements)
+            {
+                <tr>
+                    <td>@m.Date.ToString("dd MMM yyyy")</td>
+                    <td>@m.Unit</td>
+                    <td>@m.Value</td>
+                    <td>@(m.IsPersonalBest ? "✓" : "")</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private IReadOnlyList<MeasurementDto>? _measurements;
+    private MeasurementFormModel _form = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        _measurements = await MeasurementConsumer.GetMyMeasurementsAsync();
+    }
+
+    private async Task AddMeasurement()
+    {
+        var dto = new CreateMeasurementDto(
+            ClientId: 0,
+            Unit: _form.Unit,
+            Value: _form.Value,
+            Date: _form.Date,
+            Intensity: Fitmaniac.Domain.Enums.IntensityLevel.Medium,
+            Notes: null);
+        await MeasurementConsumer.CreateAsync(dto);
+        _measurements = await MeasurementConsumer.GetMyMeasurementsAsync();
+        _form = new();
+    }
+
+    private class MeasurementFormModel
+    {
+        public Fitmaniac.Domain.Enums.GoalUnit Unit { get; set; }
+        public double Value { get; set; }
+        public DateTime Date { get; set; } = DateTime.Today;
+    }
+}

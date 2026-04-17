@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/mobile/">
+    <Project Path="mobile/Fitmaniac.MAUI/Fitmaniac.MAUI.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Fitmaniac.Api/Fitmaniac.Api.csproj" />
+    <Project Path="src/Fitmaniac.Application/Fitmaniac.Application.csproj" />
+    <Project Path="src/Fitmaniac.Domain/Fitmaniac.Domain.csproj" />
+    <Project Path="src/Fitmaniac.Infrastructure/Fitmaniac.Infrastructure.csproj" />
+    <Project Path="src/Fitmaniac.Shared/Fitmaniac.Shared.csproj" />
+    <Project Path="src/Fitmaniac.Web/Fitmaniac.Web.csproj" />
+  </Folder>
+</Solution>

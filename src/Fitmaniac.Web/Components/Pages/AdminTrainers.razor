@@ -1,0 +1,48 @@
+@page "/admin/trainers"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+@inject ITrainerConsumer TrainerConsumer
+
+<PageTitle>Admin — Trainers</PageTitle>
+<h1>Trainer Management</h1>
+
+@if (_trainers is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Id</th><th>Name</th><th>City</th><th>Specializations</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var t in _trainers.Items)
+            {
+                <tr>
+                    <td>@t.Id</td>
+                    <td>@t.FirstName @t.LastName</td>
+                    <td>@t.City</td>
+                    <td>@string.Join(", ", t.Specializations)</td>
+                    <td>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteTrainer(t.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Fitmaniac.Application.Common.PagedResult<TrainerListItemDto>? _trainers;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _trainers = await TrainerConsumer.GetTrainersAsync();
+    }
+
+    private async Task DeleteTrainer(int id)
+    {
+        await TrainerConsumer.DeleteTrainerAsync(id);
+        _trainers = await TrainerConsumer.GetTrainersAsync();
+    }
+}

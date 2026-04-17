@@ -1,0 +1,32 @@
+@page "/profile"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IUserConsumer UserConsumer
+
+<PageTitle>Profile — Fitmaniac</PageTitle>
+<h1>My Profile</h1>
+
+@if (_user is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <div class="card mb-4">
+        <div class="card-body">
+            <p><strong>Username:</strong> @_user.Username</p>
+            <p><strong>Email:</strong> @_user.Email</p>
+            <p><strong>Role:</strong> @_user.Role</p>
+            <p><strong>Status:</strong> @_user.Status</p>
+            <p><strong>Member since:</strong> @_user.CreatedUtc.ToString("dd MMM yyyy")</p>
+        </div>
+    </div>
+}
+
+@code {
+    private UserDto? _user;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _user = await UserConsumer.GetCurrentUserAsync();
+    }
+}

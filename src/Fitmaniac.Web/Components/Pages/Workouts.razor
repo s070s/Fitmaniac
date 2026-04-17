@@ -1,0 +1,48 @@
+@page "/workouts"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IWorkoutConsumer WorkoutConsumer
+
+<PageTitle>Workouts — Fitmaniac</PageTitle>
+<h1>My Workouts</h1>
+
+@if (_workouts is null)
+{
+    <p>Loading...</p>
+}
+else if (_workouts.Count == 0)
+{
+    <p class="text-muted">No workouts assigned yet.</p>
+}
+else
+{
+    <div class="row g-3">
+        @foreach (var w in _workouts)
+        {
+            <div class="col-md-4">
+                <div class="card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">@w.Type Workout</h5>
+                        <p class="card-text text-muted">@w.ScheduledDateTime.ToString("dd MMM yyyy")</p>
+                        @if (w.CompletedByMe)
+                        {
+                            <span class="badge bg-success">Completed</span>
+                        }
+                        else
+                        {
+                            <a href="/workouts/@w.Id" class="btn btn-sm btn-primary">View</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private IReadOnlyList<WorkoutListItemDto>? _workouts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _workouts = await WorkoutConsumer.GetMyWorkoutsAsync();
+    }
+}

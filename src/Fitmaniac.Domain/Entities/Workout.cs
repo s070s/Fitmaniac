@@ -1,0 +1,21 @@
+using System.ComponentModel.DataAnnotations;
+using Fitmaniac.Domain.Common;
+
+namespace Fitmaniac.Domain.Entities;
+
+public class Workout : AuditableEntity
+{
+    [Required] public DateTime ScheduledDateTime { get; set; }
+    [Required, StringLength(50)] public string Type { get; set; } = null!;
+    [Required, Range(1, 300)] public int DurationInMinutes { get; set; }
+    [StringLength(500)] public string? Notes { get; set; }
+
+    public int? TrainerId { get; set; }
+    public Trainer? Trainer { get; set; }
+
+    public int? WeeklyProgramId { get; set; }
+    public WeeklyProgram? WeeklyProgram { get; set; }
+
+    public ICollection<Client> Clients { get; set; } = new List<Client>();
+    public ICollection<WorkoutExercise> WorkoutExercises { get; set; } = new List<WorkoutExercise>();
+}

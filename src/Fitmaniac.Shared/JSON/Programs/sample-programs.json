@@ -1,0 +1,18 @@
+[
+  {
+    "name": "4-Week Full-Body Beginner",
+    "description": "A 4-week program for beginners covering all major muscle groups 3 times per week.",
+    "durationInWeeks": 4,
+    "workoutsPerWeek": 3,
+    "focusAreas": ["FullBody"],
+    "experienceLevel": "Beginner"
+  },
+  {
+    "name": "6-Week Upper/Lower Split",
+    "description": "An intermediate program alternating upper-body and lower-body days, 4 days per week.",
+    "durationInWeeks": 6,
+    "workoutsPerWeek": 4,
+    "focusAreas": ["Chest", "Back", "Shoulders", "Arms", "Legs", "Glutes"],
+    "experienceLevel": "Occasional"
+  }
+]

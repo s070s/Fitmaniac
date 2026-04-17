@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Fitmaniac.MAUI.Pages.HomePage"
+             Title="Home">
+
+    <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+        <ScrollView>
+            <VerticalStackLayout Padding="16" Spacing="12">
+                <Label Text="My Progress" FontSize="22" FontAttributes="Bold" />
+
+                <Grid ColumnDefinitions="*,*,*" ColumnSpacing="8">
+                    <Border Grid.Column="0" Padding="12" Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout>
+                            <Label Text="Workouts" FontSize="12" TextColor="Gray" />
+                            <Label Text="{Binding Summary.CompletedWorkouts}" FontSize="20" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="1" Padding="12" Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout>
+                            <Label Text="Goals" FontSize="12" TextColor="Gray" />
+                            <Label Text="{Binding Summary.CompletedGoals}" FontSize="20" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Column="2" Padding="12" Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout>
+                            <Label Text="Calories" FontSize="12" TextColor="Gray" />
+                            <Label Text="{Binding Summary.TotalCaloriesBurned, StringFormat='{0:N0}'}" FontSize="20" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <Label Text="Recent Workouts" FontSize="18" FontAttributes="Bold" Margin="0,12,0,0" />
+                <CollectionView ItemsSource="{Binding RecentWorkouts}" EmptyView="No workouts yet.">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="12" Margin="0,4" Style="{StaticResource CardBorder}">
+                                <VerticalStackLayout>
+                                    <Label Text="{Binding Type}" FontAttributes="Bold" />
+                                    <Label Text="{Binding ScheduledDateTime, StringFormat='{0:dd MMM yyyy}'}" TextColor="Gray" FontSize="12" />
+                                </VerticalStackLayout>
+                            </Border>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

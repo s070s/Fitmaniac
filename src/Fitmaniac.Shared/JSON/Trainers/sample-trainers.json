@@ -1,0 +1,7 @@
+[
+  { "firstName": "Alex", "lastName": "Papadopoulos", "email": "alex.trainer@fitmaniac.local", "password": "Trainer123!", "bio": "10 years of personal training experience specializing in strength and conditioning.", "specializations": ["StrengthTraining", "GeneralFitness"], "city": "Athens", "country": "Greece" },
+  { "firstName": "Maria", "lastName": "Konstantinou", "email": "maria.trainer@fitmaniac.local", "password": "Trainer123!", "bio": "Certified yoga and pilates instructor with a focus on flexibility and rehabilitation.", "specializations": ["Yoga", "Pilates", "Rehabilitation"], "city": "Thessaloniki", "country": "Greece" },
+  { "firstName": "Nikos", "lastName": "Stavros", "email": "nikos.trainer@fitmaniac.local", "password": "Trainer123!", "bio": "CrossFit Level 2 trainer passionate about functional fitness and endurance.", "specializations": ["CrossFit", "Cardio", "Endurance"], "city": "Patras", "country": "Greece" },
+  { "firstName": "Elena", "lastName": "Georgiou", "email": "elena.trainer@fitmaniac.local", "password": "Trainer123!", "bio": "Nutrition and weight-loss coach helping clients achieve sustainable results.", "specializations": ["WeightLoss", "Nutrition", "GeneralFitness"], "city": "Heraklion", "country": "Greece" },
+  { "firstName": "Dimitris", "lastName": "Angelou", "email": "dimitris.trainer@fitmaniac.local", "password": "Trainer123!", "bio": "Competitive bodybuilder and sports performance coach.", "specializations": ["Bodybuilding", "SportsPerformance", "StrengthTraining"], "city": "Larissa", "country": "Greece" }
+]

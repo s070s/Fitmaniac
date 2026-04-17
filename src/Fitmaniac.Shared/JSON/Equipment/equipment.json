@@ -1,0 +1,15 @@
+[
+  { "name": "Barbell", "description": "A long steel bar used for compound lifts like squats, deadlifts, and bench press." },
+  { "name": "Dumbbell", "description": "Short hand-held weights used for isolation and compound exercises." },
+  { "name": "Kettlebell", "description": "Cast iron weight with a handle, ideal for dynamic movements." },
+  { "name": "Pull-up Bar", "description": "A horizontal bar mounted overhead for pulling exercises." },
+  { "name": "Bench", "description": "Adjustable padded bench used for pressing and seated exercises." },
+  { "name": "Squat Rack", "description": "A rack with adjustable safety bars for barbell squats and presses." },
+  { "name": "Resistance Band", "description": "Elastic bands providing variable resistance for many exercises." },
+  { "name": "Medicine Ball", "description": "A weighted ball used for power and conditioning exercises." },
+  { "name": "Yoga Mat", "description": "A non-slip mat for floor exercises, yoga, and stretching." },
+  { "name": "Treadmill", "description": "A motorized running machine for indoor cardio." },
+  { "name": "Rowing Machine", "description": "A cardio machine that mimics the motion of rowing a boat." },
+  { "name": "Jump Rope", "description": "A rope used for jumping exercises, excellent for cardio." },
+  { "name": "Cable Machine", "description": "A weight machine with adjustable pulleys for various exercises." }
+]

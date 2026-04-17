@@ -1,0 +1,53 @@
+@page "/subscription"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject ISubscriptionConsumer SubscriptionConsumer
+
+<PageTitle>Subscription — Fitmaniac</PageTitle>
+<h1>Subscription</h1>
+
+@if (_current is not null)
+{
+    <div class="alert alert-info mb-4">
+        <strong>Current Plan:</strong> @_current.PlanName —
+        Expires: @(_current.EndDate?.ToString("dd MMM yyyy") ?? "Active")
+    </div>
+}
+
+<h3>Available Plans</h3>
+@if (_plans is not null)
+{
+    <div class="row g-3">
+        @foreach (var p in _plans)
+        {
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body text-center">
+                        <h5>@p.Name</h5>
+                        <p class="display-6">@p.Price.ToString("C")</p>
+                        <small class="text-muted">/ @p.BillingPeriod</small>
+                        <div class="mt-3">
+                            <button class="btn btn-primary" @onclick="() => Upgrade(p.Id)">Select Plan</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private IReadOnlyList<Fitmaniac.Shared.DTOs.Subscriptions.SubscriptionPlanDto>? _plans;
+    private Fitmaniac.Shared.DTOs.Subscriptions.UserSubscriptionDto? _current;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _plans = await SubscriptionConsumer.GetPlansAsync();
+        _current = await SubscriptionConsumer.GetCurrentSubscriptionAsync();
+    }
+
+    private async Task Upgrade(int planId)
+    {
+        await SubscriptionConsumer.UpgradeAsync(planId);
+        _current = await SubscriptionConsumer.GetCurrentSubscriptionAsync();
+    }
+}

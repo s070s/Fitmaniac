@@ -1,0 +1,32 @@
+@page "/program"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IProgramConsumer ProgramConsumer
+
+<PageTitle>My Program — Fitmaniac</PageTitle>
+<h1>My Weekly Program</h1>
+
+@if (_program is null)
+{
+    <p class="text-muted">No program assigned yet. Contact your trainer.</p>
+}
+else
+{
+    <div class="card mb-4">
+        <div class="card-body">
+            <h4>@_program.Name</h4>
+            <p class="text-muted">Week @_program.CurrentWeek of @_program.DurationInWeeks</p>
+            <div class="progress">
+                <div class="progress-bar" style="width:@((_program.CurrentWeek * 100) / Math.Max(1, _program.DurationInWeeks))%"></div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    private Fitmaniac.Shared.DTOs.Programs.WeeklyProgramDto? _program;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _program = await ProgramConsumer.GetMyProgramAsync();
+    }
+}

@@ -1,0 +1,71 @@
+@page "/chat"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IChatConsumer ChatConsumer
+
+<PageTitle>Chat — Fitmaniac</PageTitle>
+<h1>Messages</h1>
+
+<div class="row">
+    <div class="col-md-4 border-end">
+        <h5>Conversations</h5>
+        @if (_conversations is not null)
+        {
+            @foreach (var conv in _conversations)
+            {
+                <div class="list-group-item list-group-item-action @(_selectedId == conv.Id ? "active" : "")"
+                     style="cursor:pointer" @onclick="() => SelectConversation(conv.Id)">
+                    Conversation #@conv.Id
+                </div>
+            }
+        }
+    </div>
+    <div class="col-md-8">
+        @if (_messages is not null)
+        {
+            <div style="height:400px;overflow-y:auto;padding:1rem;border:1px solid #ddd;border-radius:4px" class="mb-3">
+                @foreach (var msg in _messages.Items)
+                {
+                    <div class="mb-2">
+                        <strong>@msg.SenderName:</strong> @msg.Content
+                        <small class="text-muted ms-2">@msg.SentAt.ToString("HH:mm")</small>
+                    </div>
+                }
+            </div>
+            <div class="input-group">
+                <input @bind="_newMessage" class="form-control" placeholder="Type a message..." />
+                <button class="btn btn-primary" @onclick="SendMessage">Send</button>
+            </div>
+        }
+        else
+        {
+            <p class="text-muted">Select a conversation to start chatting.</p>
+        }
+    </div>
+</div>
+
+@code {
+    private IReadOnlyList<ChatConversationDto>? _conversations;
+    private Fitmaniac.Application.Common.PagedResult<ChatMessageDto>? _messages;
+    private int _selectedId;
+    private string _newMessage = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        _conversations = await ChatConsumer.GetConversationsAsync();
+    }
+
+    private async Task SelectConversation(int id)
+    {
+        _selectedId = id;
+        _messages = await ChatConsumer.GetMessagesAsync(id);
+        await ChatConsumer.MarkAsReadAsync(id);
+    }
+
+    private async Task SendMessage()
+    {
+        if (string.IsNullOrWhiteSpace(_newMessage) || _selectedId == 0) return;
+        await ChatConsumer.SendMessageAsync(_selectedId, _newMessage);
+        _newMessage = "";
+        _messages = await ChatConsumer.GetMessagesAsync(_selectedId);
+    }
+}

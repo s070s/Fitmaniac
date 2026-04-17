@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Shell
+    x:Class="Fitmaniac.MAUI.AppShell"
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:pages="clr-namespace:Fitmaniac.MAUI.Pages"
+    Title="Fitmaniac">
+
+    <Shell.Resources>
+        <ResourceDictionary>
+            <converters:StringNotNullOrEmptyConverter x:Key="StringNotNullOrEmpty"
+                xmlns:converters="clr-namespace:Fitmaniac.MAUI.Converters" />
+            <converters:NullToBoolConverter x:Key="NullToBool"
+                xmlns:converters="clr-namespace:Fitmaniac.MAUI.Converters" />
+        </ResourceDictionary>
+    </Shell.Resources>
+
+    <!-- Auth (not tabbed) -->
+    <ShellContent Route="login" ContentTemplate="{DataTemplate pages:LoginPage}" Shell.NavBarIsVisible="False" />
+    <ShellContent Route="register" ContentTemplate="{DataTemplate pages:RegisterPage}" Shell.NavBarIsVisible="False" />
+
+    <!-- Main tabs -->
+    <TabBar>
+        <Tab Title="Home" Icon="home.png">
+            <ShellContent Route="home" ContentTemplate="{DataTemplate pages:HomePage}" />
+        </Tab>
+        <Tab Title="Workouts" Icon="workout.png">
+            <ShellContent Route="workouts" ContentTemplate="{DataTemplate pages:WorkoutsPage}" />
+        </Tab>
+        <Tab Title="Progress" Icon="progress.png">
+            <ShellContent Route="progress" ContentTemplate="{DataTemplate pages:ProgressPage}" />
+        </Tab>
+        <Tab Title="Profile" Icon="profile.png">
+            <ShellContent Route="profile" ContentTemplate="{DataTemplate pages:ProfilePage}" />
+        </Tab>
+    </TabBar>
+</Shell>

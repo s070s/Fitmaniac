@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Read(//c/Users/GS/Desktop/ResetYourFutureToFitmaniac/ResetYourFuture/**)",
+      "Read(//c/Users/GS/Desktop/ResetYourFutureToFitmaniac/FullStackTest/**)"
+    ]
+  }
+}

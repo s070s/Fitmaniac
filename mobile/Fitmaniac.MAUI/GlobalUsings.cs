@@ -1,0 +1,16 @@
+global using System;
+global using System.Collections.Generic;
+global using System.Collections.ObjectModel;
+global using System.Linq;
+global using System.Threading;
+global using System.Threading.Tasks;
+global using CommunityToolkit.Mvvm.ComponentModel;
+global using CommunityToolkit.Mvvm.Input;
+global using Fitmaniac.Domain.Enums;
+global using Fitmaniac.Shared.DTOs.Auth;
+global using Fitmaniac.Shared.DTOs.Common;
+global using Fitmaniac.Shared.DTOs.Exercises;
+global using Fitmaniac.Shared.DTOs.Progress;
+global using Fitmaniac.Shared.DTOs.Workouts;
+global using Fitmaniac.MAUI.Services;
+global using Fitmaniac.MAUI.ViewModels;

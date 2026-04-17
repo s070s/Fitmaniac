@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Fitmaniac.MAUI.Pages.ProgressPage"
+             Title="Progress">
+
+    <RefreshView Command="{Binding LoadCommand}" IsRefreshing="{Binding IsBusy}">
+        <ScrollView Padding="16">
+            <VerticalStackLayout Spacing="12">
+                <Label Text="Summary" FontSize="20" FontAttributes="Bold" />
+
+                <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="8" RowSpacing="8">
+                    <Border Grid.Row="0" Grid.Column="0" Padding="12" Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout>
+                            <Label Text="Workouts Done" FontSize="11" TextColor="Gray" />
+                            <Label Text="{Binding Summary.CompletedWorkouts}" FontSize="22" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Row="0" Grid.Column="1" Padding="12" Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout>
+                            <Label Text="Goals Achieved" FontSize="11" TextColor="Gray" />
+                            <Label Text="{Binding Summary.CompletedGoals}" FontSize="22" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="0" Padding="12" Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout>
+                            <Label Text="Calories Burned" FontSize="11" TextColor="Gray" />
+                            <Label Text="{Binding Summary.TotalCaloriesBurned, StringFormat='{0:N0}'}" FontSize="22" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Border>
+                    <Border Grid.Row="1" Grid.Column="1" Padding="12" Style="{StaticResource CardBorder}">
+                        <VerticalStackLayout>
+                            <Label Text="Personal Bests" FontSize="11" TextColor="Gray" />
+                            <Label Text="{Binding Summary.TotalPersonalBests}" FontSize="22" FontAttributes="Bold" />
+                        </VerticalStackLayout>
+                    </Border>
+                </Grid>
+
+                <Label Text="Weekly Progress" FontSize="20" FontAttributes="Bold" Margin="0,12,0,0" />
+                <CollectionView ItemsSource="{Binding Weekly}" EmptyView="No weekly data.">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid Padding="4,8" ColumnDefinitions="*,*,*,*">
+                                <Label Grid.Column="0" Text="{Binding Year}" />
+                                <Label Grid.Column="1" Text="{Binding WeekNumber, StringFormat='Wk {0}'}" />
+                                <Label Grid.Column="2" Text="{Binding CompletedWorkouts}" />
+                                <Label Grid.Column="3" Text="{Binding CaloriesBurned, StringFormat='{0:N0}'}" />
+                            </Grid>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+            </VerticalStackLayout>
+        </ScrollView>
+    </RefreshView>
+</ContentPage>

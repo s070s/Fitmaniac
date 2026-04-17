@@ -1,0 +1,64 @@
+@page "/workouts/{Id:int}"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IWorkoutConsumer WorkoutConsumer
+@inject NavigationManager Nav
+
+<PageTitle>Workout — Fitmaniac</PageTitle>
+
+@if (_workout is null)
+{
+    <p>Loading...</p>
+}
+else
+{
+    <h1>@_workout.Type Workout</h1>
+    <p class="text-muted">Scheduled: @_workout.ScheduledDateTime.ToString("dd MMM yyyy")</p>
+
+    @foreach (var ex in _workout.Exercises)
+    {
+        <div class="card mb-3">
+            <div class="card-header">@ex.ExerciseName</div>
+            <div class="card-body">
+                <table class="table table-sm">
+                    <thead>
+                        <tr><th>Set</th><th>Reps</th><th>Weight</th><th>Duration</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in ex.Sets)
+                        {
+                            <tr>
+                                <td>@s.SetNumber</td>
+                                <td>@s.Repetitions</td>
+                                <td>@(s.Weight is double weight ? $"{weight} kg" : "-")</td>
+                                <td>@s.DurationInSeconds s</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    }
+
+    <button class="btn btn-success" @onclick="CompleteWorkout" disabled="@_busy">
+        @(_busy ? "Saving..." : "Mark as Complete")
+    </button>
+}
+
+@code {
+    [Parameter] public int Id { get; set; }
+    private WorkoutDto? _workout;
+    private bool _busy;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _workout = await WorkoutConsumer.GetByIdAsync(Id);
+    }
+
+    private async Task CompleteWorkout()
+    {
+        _busy = true;
+        await WorkoutConsumer.CompleteWorkoutAsync(Id);
+        _workout = await WorkoutConsumer.GetByIdAsync(Id);
+        _busy = false;
+    }
+}

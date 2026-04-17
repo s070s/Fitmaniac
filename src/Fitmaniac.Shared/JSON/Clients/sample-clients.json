@@ -1,0 +1,7 @@
+[
+  { "firstName": "Sofia", "lastName": "Nikolaou", "email": "sofia.client@fitmaniac.local", "password": "Client123!", "experienceLevel": "Beginner", "preferredIntensityLevel": "Low", "weight": 65.0, "height": 168.0, "city": "Athens", "country": "Greece" },
+  { "firstName": "Kostas", "lastName": "Petrou", "email": "kostas.client@fitmaniac.local", "password": "Client123!", "experienceLevel": "Regular", "preferredIntensityLevel": "High", "weight": 82.0, "height": 180.0, "city": "Athens", "country": "Greece" },
+  { "firstName": "Anna", "lastName": "Dimitriou", "email": "anna.client@fitmaniac.local", "password": "Client123!", "experienceLevel": "Occasional", "preferredIntensityLevel": "Medium", "weight": 58.0, "height": 162.0, "city": "Thessaloniki", "country": "Greece" },
+  { "firstName": "Yiannis", "lastName": "Alexiou", "email": "yiannis.client@fitmaniac.local", "password": "Client123!", "experienceLevel": "Athlete", "preferredIntensityLevel": "Extreme", "weight": 90.0, "height": 185.0, "city": "Patras", "country": "Greece" },
+  { "firstName": "Christina", "lastName": "Mitroussi", "email": "christina.client@fitmaniac.local", "password": "Client123!", "experienceLevel": "Beginner", "preferredIntensityLevel": "Medium", "weight": 70.0, "height": 170.0, "city": "Heraklion", "country": "Greece" }
+]

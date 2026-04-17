@@ -1,0 +1,64 @@
+@page "/admin/users"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize(Roles = "Admin")]
+@inject IUserConsumer UserConsumer
+
+<PageTitle>Admin — Users</PageTitle>
+<h1>User Management</h1>
+
+@if (_stats is not null)
+{
+    <div class="row g-3 mb-4">
+        <div class="col"><div class="card text-center"><div class="card-body"><h6>Total</h6><p>@_stats.TotalUsers</p></div></div></div>
+        <div class="col"><div class="card text-center"><div class="card-body"><h6>Active</h6><p>@_stats.ActiveUsers</p></div></div></div>
+        <div class="col"><div class="card text-center"><div class="card-body"><h6>Trainers</h6><p>@_stats.TotalTrainers</p></div></div></div>
+        <div class="col"><div class="card text-center"><div class="card-body"><h6>Clients</h6><p>@_stats.TotalClients</p></div></div></div>
+    </div>
+}
+
+@if (_users is not null)
+{
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Id</th><th>Username</th><th>Email</th><th>Role</th><th>Status</th><th>Actions</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var u in _users.Items)
+            {
+                <tr>
+                    <td>@u.Id</td>
+                    <td>@u.Username</td>
+                    <td>@u.Email</td>
+                    <td>@u.Role</td>
+                    <td>@u.Status</td>
+                    <td>
+                        <button class="btn btn-sm btn-warning" @onclick="() => DisableUser(u.Id)">Disable</button>
+                        <button class="btn btn-sm btn-danger" @onclick="() => DeleteUser(u.Id)">Delete</button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private Fitmaniac.Application.Common.PagedResult<UserDto>? _users;
+    private UserStatisticsDto? _stats;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _users = await UserConsumer.GetUsersAsync();
+        _stats = await UserConsumer.GetStatisticsAsync();
+    }
+
+    private async Task DisableUser(int id)
+    {
+        await UserConsumer.DisableUserAsync(id);
+        _users = await UserConsumer.GetUsersAsync();
+    }
+
+    private async Task DeleteUser(int id)
+    {
+        await UserConsumer.DeleteUserAsync(id);
+        _users = await UserConsumer.GetUsersAsync();
+    }
+}

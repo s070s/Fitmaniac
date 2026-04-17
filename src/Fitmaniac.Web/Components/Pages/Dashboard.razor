@@ -1,0 +1,81 @@
+@page "/"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IProgressConsumer ProgressConsumer
+@inject IWorkoutConsumer WorkoutConsumer
+@inject IGoalConsumer GoalConsumer
+
+<PageTitle>Dashboard — Fitmaniac</PageTitle>
+<h1>Dashboard</h1>
+
+@if (_summary is not null)
+{
+    <div class="row g-4 mb-4">
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Workouts</h5>
+                    <p class="display-4">@_summary.CompletedWorkouts</p>
+                    <small class="text-muted">of @_summary.TotalWorkouts</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Goals</h5>
+                    <p class="display-4">@_summary.CompletedGoals</p>
+                    <small class="text-muted">of @_summary.TotalGoals</small>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Calories Burned</h5>
+                    <p class="display-4">@_summary.TotalCaloriesBurned</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-center">
+                <div class="card-body">
+                    <h5 class="card-title">Personal Bests</h5>
+                    <p class="display-4">@_summary.TotalPersonalBests</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+else
+{
+    <p>Loading summary...</p>
+}
+
+@if (_workouts is not null)
+{
+    <h3>Recent Workouts</h3>
+    <div class="row g-3">
+        @foreach (var w in _workouts.Take(4))
+        {
+            <div class="col-md-3">
+                <div class="card">
+                    <div class="card-body">
+                        <h6>@w.Type Workout</h6>
+                        <p class="text-muted small">@w.ScheduledDateTime.ToString("dd MMM yyyy")</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@code {
+    private ProgressSummaryDto? _summary;
+    private IReadOnlyList<WorkoutListItemDto>? _workouts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _summary = await ProgressConsumer.GetSummaryAsync();
+        _workouts = await WorkoutConsumer.GetMyWorkoutsAsync();
+    }
+}

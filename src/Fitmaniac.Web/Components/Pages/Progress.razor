@@ -1,0 +1,68 @@
+@page "/progress"
+@attribute [Microsoft.AspNetCore.Authorization.Authorize]
+@inject IProgressConsumer ProgressConsumer
+
+<PageTitle>Progress — Fitmaniac</PageTitle>
+<h1>My Progress</h1>
+
+@if (_summary is not null)
+{
+    <div class="row g-4 mb-4">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Workouts Completed</h5>
+                    <p class="display-5">@_summary.CompletedWorkouts / @_summary.TotalWorkouts</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Goals Achieved</h5>
+                    <p class="display-5">@_summary.CompletedGoals / @_summary.TotalGoals</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body text-center">
+                    <h5>Calories Burned</h5>
+                    <p class="display-5">@_summary.TotalCaloriesBurned</p>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@if (_weekly is not null && _weekly.Count > 0)
+{
+    <h3>Weekly Progress</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr><th>Week</th><th>Year</th><th>Workouts</th><th>Calories</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var w in _weekly)
+            {
+                <tr>
+                    <td>Week @w.WeekNumber</td>
+                    <td>@w.Year</td>
+                    <td>@w.CompletedWorkouts</td>
+                    <td>@w.CaloriesBurned</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+
+@code {
+    private ProgressSummaryDto? _summary;
+    private IReadOnlyList<WeeklyProgressDto>? _weekly;
+
+    protected override async Task OnInitializedAsync()
+    {
+        _summary = await ProgressConsumer.GetSummaryAsync();
+        _weekly = await ProgressConsumer.GetWeeklyAsync(12);
+    }
+}
