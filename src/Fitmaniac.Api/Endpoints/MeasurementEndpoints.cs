@@ -12,9 +12,21 @@ public static class MeasurementEndpoints
     {
         var g = e.MapGroup("/measurements").RequireAuthorization();
 
-        g.MapGet("/me", async ([FromQuery] GoalUnit? unit, [FromQuery] DateTime? from, [FromQuery] DateTime? to,
+        g.MapGet("/me", async ([FromQuery] GoalUnit? unit, [FromQuery] string? from, [FromQuery] string? to,
             ICurrentUserService cur, IMeasurementService svc, CancellationToken ct) =>
-            (await svc.GetMyMeasurementsAsync(cur.UserId!.Value, unit, from, to, ct)).ToResult());
+        {
+            if (!QueryParameterParsers.TryParseOptionalDateTime(from, "from", out var parsedFrom, out var fromErrors))
+            {
+                return Results.ValidationProblem(fromErrors!);
+            }
+
+            if (!QueryParameterParsers.TryParseOptionalDateTime(to, "to", out var parsedTo, out var toErrors))
+            {
+                return Results.ValidationProblem(toErrors!);
+            }
+
+            return (await svc.GetMyMeasurementsAsync(cur.UserId!.Value, unit, parsedFrom, parsedTo, ct)).ToResult();
+        });
 
         g.MapPost("/", async (CreateMeasurementDto dto, IMeasurementService svc, CancellationToken ct) =>
             (await svc.CreateAsync(dto, ct)).ToResult());

@@ -14,7 +14,7 @@ public interface IMeasurementConsumer
 public sealed class MeasurementConsumer(HttpClient http) : ApiClientBase(http), IMeasurementConsumer
 {
     public Task<IReadOnlyList<MeasurementDto>?> GetMyMeasurementsAsync(GoalUnit? unit = null, DateTime? from = null, DateTime? to = null, CancellationToken ct = default) =>
-        GetAsync<IReadOnlyList<MeasurementDto>>($"/api/measurements/me?unit={unit}&from={from:O}&to={to:O}", ct);
+        GetAsync<IReadOnlyList<MeasurementDto>>(BuildUrl("/api/measurements/me", ("unit", unit), ("from", from), ("to", to)), ct);
 
     public Task<MeasurementDto?> CreateAsync(CreateMeasurementDto dto, CancellationToken ct = default) =>
         PostAsync<MeasurementDto>("/api/measurements", dto, ct);

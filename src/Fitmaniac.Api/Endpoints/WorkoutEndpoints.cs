@@ -12,9 +12,21 @@ public static class WorkoutEndpoints
     {
         var g = e.MapGroup("/workouts").RequireAuthorization();
 
-        g.MapGet("/", async ([FromQuery] DateTime? from, [FromQuery] DateTime? to, [FromQuery] int? programId,
+        g.MapGet("/", async ([FromQuery] string? from, [FromQuery] string? to, [FromQuery] int? programId,
             ICurrentUserService cur, IWorkoutService svc, CancellationToken ct) =>
-            (await svc.GetMyWorkoutsAsync(cur.UserId!.Value, from, to, programId, ct)).ToResult());
+        {
+            if (!QueryParameterParsers.TryParseOptionalDateTime(from, "from", out var parsedFrom, out var fromErrors))
+            {
+                return Results.ValidationProblem(fromErrors!);
+            }
+
+            if (!QueryParameterParsers.TryParseOptionalDateTime(to, "to", out var parsedTo, out var toErrors))
+            {
+                return Results.ValidationProblem(toErrors!);
+            }
+
+            return (await svc.GetMyWorkoutsAsync(cur.UserId!.Value, parsedFrom, parsedTo, programId, ct)).ToResult();
+        });
 
         g.MapGet("/{id:int}", async (int id, ICurrentUserService cur, IWorkoutService svc, CancellationToken ct) =>
             (await svc.GetByIdAsync(id, cur.UserId!.Value, ct)).ToResult());

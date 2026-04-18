@@ -1,5 +1,6 @@
 using System.Net.Http.Json;
 using System.Text.Json;
+using System.Web;
 
 namespace Fitmaniac.Web.Consumers;
 
@@ -8,6 +9,29 @@ public abstract class ApiClientBase(HttpClient http)
     protected HttpClient Http { get; } = http;
 
     protected static readonly JsonSerializerOptions JsonOpts = new(JsonSerializerDefaults.Web);
+
+    protected static string BuildUrl(string path, params (string Key, object? Value)[] query)
+    {
+        var builder = HttpUtility.ParseQueryString(string.Empty);
+
+        foreach (var (key, value) in query)
+        {
+            if (value is null)
+            {
+                continue;
+            }
+
+            builder[key] = value switch
+            {
+                DateTime dateTime => dateTime.ToString("O"),
+                DateTimeOffset dateTimeOffset => dateTimeOffset.ToString("O"),
+                _ => value.ToString()
+            };
+        }
+
+        var queryString = builder.ToString();
+        return string.IsNullOrEmpty(queryString) ? path : $"{path}?{queryString}";
+    }
 
     protected async Task<T?> GetAsync<T>(string url, CancellationToken ct = default)
     {

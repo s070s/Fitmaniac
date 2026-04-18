@@ -62,6 +62,11 @@ public sealed class FitmaniacDbContext : IdentityDbContext<ApplicationUser, Iden
                 builder.Entity(entityType.ClrType).HasQueryFilter(lambda);
             }
         }
+
+        // ClientWorkout is a join entity (not AuditableEntity) but has required navigations to
+        // Client and Workout, both of which have soft-delete query filters. Adding a matching
+        // filter here prevents the EF warning and ensures consistent filtering behaviour.
+        builder.Entity<ClientWorkout>().HasQueryFilter(cw => !cw.Client.IsDeleted && !cw.Workout.IsDeleted);
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

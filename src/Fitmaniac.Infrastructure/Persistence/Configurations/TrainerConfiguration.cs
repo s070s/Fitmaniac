@@ -15,8 +15,14 @@ public sealed class TrainerConfiguration : IEntityTypeConfiguration<Trainer>
         builder.HasMany(t => t.Clients)
             .WithMany(c => c.Trainers)
             .UsingEntity<TrainerClient>(
-                j => j.HasOne(tc => tc.Client).WithMany().HasForeignKey(tc => tc.ClientId),
-                j => j.HasOne(tc => tc.Trainer).WithMany().HasForeignKey(tc => tc.TrainerId));
+                j => j.HasOne(tc => tc.Client)
+                    .WithMany()
+                    .HasForeignKey(tc => tc.ClientId)
+                    .OnDelete(DeleteBehavior.NoAction),
+                j => j.HasOne(tc => tc.Trainer)
+                    .WithMany()
+                    .HasForeignKey(tc => tc.TrainerId)
+                    .OnDelete(DeleteBehavior.NoAction));
 
         builder.HasMany(t => t.Workouts)
             .WithOne(w => w.Trainer)

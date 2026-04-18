@@ -22,9 +22,15 @@ public sealed class AdminUserSeeder
 
     public async Task SeedAsync()
     {
-        var email = _config["Seed:AdminEmail"] ?? SeedDefaults.AdminEmailFallback;
-        var password = _config["Seed:AdminPassword"] ?? SeedDefaults.AdminPasswordFallback;
-        var username = _config["Seed:AdminUsername"] ?? SeedDefaults.AdminUsernameFallback;
+        var email = string.IsNullOrWhiteSpace(_config["Seed:AdminEmail"])
+            ? SeedDefaults.AdminEmailFallback
+            : _config["Seed:AdminEmail"]!;
+        var password = string.IsNullOrWhiteSpace(_config["Seed:AdminPassword"])
+            ? SeedDefaults.AdminPasswordFallback
+            : _config["Seed:AdminPassword"]!;
+        var username = string.IsNullOrWhiteSpace(_config["Seed:AdminUsername"])
+            ? SeedDefaults.AdminUsernameFallback
+            : _config["Seed:AdminUsername"]!;
 
         var existing = await _userManager.FindByEmailAsync(email);
         if (existing is not null) return;

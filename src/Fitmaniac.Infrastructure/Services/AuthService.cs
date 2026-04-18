@@ -97,7 +97,7 @@ public sealed class AuthService : IAuthService
             return ServiceResult<object>.Ok(new AuthResponseDto(true, accessToken, DateTime.UtcNow.AddMinutes(30), null));
 
         _cookieService.SetRefreshTokenCookie(ctx, rawRefresh, refreshExpiry);
-        return ServiceResult<object>.Ok(new AccessTokenDto(accessToken, DateTime.UtcNow.AddMinutes(30)));
+        return ServiceResult<object>.Ok(new AuthResponseDto(true, accessToken, DateTime.UtcNow.AddMinutes(30), null));
     }
 
     public async Task<ServiceResult<object>> RefreshAsync(HttpContext ctx, CancellationToken ct = default)
@@ -153,7 +153,7 @@ public sealed class AuthService : IAuthService
 
         var newExpiry = DateTime.UtcNow.AddDays(7);
         _cookieService.SetRefreshTokenCookie(ctx, newRaw, newExpiry);
-        return ServiceResult<object>.Ok(new AccessTokenDto(accessToken, DateTime.UtcNow.AddMinutes(30)));
+        return ServiceResult<object>.Ok(new AuthResponseDto(true, accessToken, DateTime.UtcNow.AddMinutes(30), null));
     }
 
     public async Task<ServiceResult<object>> LogoutAsync(HttpContext ctx, CancellationToken ct = default)
